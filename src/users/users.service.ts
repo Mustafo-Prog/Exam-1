@@ -1,7 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service.js';
 import { Register } from './dto/register.dto.js';
 import * as bcrypt from "bcrypt"
+import { Login } from './dto/login.dto.js';
 
 @Injectable()
 export class UsersService {
@@ -24,6 +25,23 @@ export class UsersService {
         })
         return{
             message: "+Product"
+        }
+    }
+    async login(body: Login){
+        const {email, password} = body
+        const user = await this.prisma.user.findUnique({where: {email}})
+        const result = await bcrypt.compare(password, user!.password)
+        if (!user || !result){
+            throw new UnauthorizedException("Email or Password incorrect");
+        }
+        return{
+            message: "Successfully logged in!",
+            info: {
+                id: user.id,
+                nickname: user.nickname,
+                email: user.email,
+                age: user.age || "Hidden"
+            }
         }
     }
     // async update(id: number, body: any) {
