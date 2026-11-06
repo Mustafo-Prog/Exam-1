@@ -10,19 +10,19 @@ export class UsersController {
         return this.service.getAll();
     }
     @Get(':id')
-    getOne(@Param(':id') id: string){
+    getOne(@Param('id') id: string){
         return this.service.getOne(+id);
     }
-    @Post()
+    @Post('/register')
     register(@Body() body: Register) {
         return this.service.register(body);
     }
     @Put(':id')
-    update(@Param(':id') id: string, @Body() body: any){
+    update(@Param('id') id: string, @Body() body: any){
         return this.service.update(+id, body);
     }
     @Delete(':id')
-    delete(@Param(':id') id: string){
+    delete(@Param('id') id: string){
         return this.service.delete(+id);
     }
 }

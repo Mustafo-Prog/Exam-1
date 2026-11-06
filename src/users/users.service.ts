@@ -24,10 +24,7 @@ export class UsersService {
         }
     }
     async update(id: number, body: any) {
-        await this.prisma.user.update({
-            where: {id},
-            data: body
-        })
+        await this.prisma.user.update({where: {id}, data: body})
         return {
             message: "Updated"
         }
