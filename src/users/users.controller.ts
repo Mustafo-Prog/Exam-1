@@ -17,10 +17,10 @@ export class UsersController {
     register(@Body() body: Register) {
         return this.service.register(body);
     }
-    @Put(':id')
-    update(@Param('id') id: string, @Body() body: any){
-        return this.service.update(+id, body);
-    }
+    // @Put(':id')
+    // update(@Param('id') id: string, @Body() body: any){
+    //     return this.service.update(+id, body);
+    // }
     @Delete(':id')
     delete(@Param('id') id: string){
         return this.service.delete(+id);
