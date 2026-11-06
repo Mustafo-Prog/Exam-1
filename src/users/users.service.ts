@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service.js';
 import { Register } from './dto/register.dto.js';
+import * as bcrypt from "bcrypt"
 
 @Injectable()
 export class UsersService {
@@ -16,19 +17,23 @@ export class UsersService {
         })
     }
     async register(body: Register){
+        const {nickname, email, age, password} = body;
+        const hashedPassword = await bcrypt.hash(password, 10);
         await this.prisma.user.create({
-            data: body
+            data: {nickname, email, age, password: hashedPassword}
         })
         return{
             message: "+Product"
         }
     }
-    async update(id: number, body: any) {
-        await this.prisma.user.update({where: {id}, data: body})
-        return {
-            message: "Updated"
-        }
-    }
+    // async update(id: number, body: any) {
+    //     const {nickname, email, age, password} = body;
+    //     const hashedPassword = await bcrypt.hash(password, 10);
+    //     await this.prisma.user.update({where: {id}, data: {nickname, email, age, password: hashedPassword}})
+    //     return {
+    //         message: "Updated"
+    //     }
+    // }
     async delete(id: number){
         await this.prisma.user.delete({
             where: {id}
